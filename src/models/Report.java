@@ -3,6 +3,7 @@ package models;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,7 +35,15 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getMyReportsCount",
             query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"
-            )
+            ),
+    @NamedQuery(
+            name = "getAllapproval_flag",
+            query = "SELECT r FROM Report AS r WHERE r.approval_flag = 1 OR r.approval_flag = 5"
+            ),
+    @NamedQuery(
+            name = "getapprovalCount",
+            query = "SELECT COUNT(r) FROM Report AS r WHERE r.approval_flag = 1 OR r.approval_flag = 5"
+            ),
 })
 @Entity
 public class Report {
@@ -68,7 +78,27 @@ public class Report {
     @Column(name = "work_end")
     private Time work_end;
 
+    @Column(name = "approval_flag")
+    private Integer approval_flag;
 
+    @Column(name = "approval_updated")
+    private Timestamp approval_updated;
+
+    @Lob
+    @Column(name = "approval_content", nullable = false)
+    private String approval_content;
+
+    @ManyToMany( mappedBy = "myIineList")
+    private List<Employee> iineEmployeeList;
+
+
+    public List<Employee> getIineEmployeeList() {
+        return iineEmployeeList;
+    }
+
+    public void setIineEmployeeList(List<Employee> iineEmployeeList) {
+        this.iineEmployeeList = iineEmployeeList;
+    }
 
     public Integer getId() {
         return id;
@@ -141,6 +171,33 @@ public class Report {
     public void setWork_end(Time work_end) {
         this.work_end = work_end;
     }
+
+    public Integer getApproval_flag() {
+        return approval_flag;
+    }
+
+    public void setApproval_flag(Integer approval_flag) {
+        this.approval_flag = approval_flag;
+    }
+
+    public String getApproval_content() {
+        return approval_content;
+    }
+
+    public void setApproval_content(String approval_content) {
+        this.approval_content = approval_content;
+    }
+
+    public Timestamp getApproval_updated() {
+        return approval_updated;
+    }
+
+    public void setApproval_updated(Timestamp approval_updated) {
+        this.approval_updated = approval_updated;
+    }
+
+
+
 
 
 

@@ -1,12 +1,16 @@
 package models;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,6 +33,7 @@ import javax.persistence.Table;
             name = "checkLoginCodeAndPassword",
             query = "SELECT e FROM Employee AS e WHERE e.delete_flag = 0 AND e.code = :code AND e.password = :pass"
             )
+
 })
 
 @Entity
@@ -60,6 +65,19 @@ public class Employee {
     @Column(name = "delete_flag", nullable = false)
     private Integer delete_flag;
 
+    @ManyToMany
+    @JoinTable(name="Iines", joinColumns = @JoinColumn( name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name="report_id"))
+    private List<Report> myIineList;
+
+
+    public List<Report> getMyIineList() {
+        return myIineList;
+    }
+
+    public void setMyIineList(List<Report> myIineList) {
+        this.myIineList = myIineList;
+    }
 
     public Integer getId() {
         return id;

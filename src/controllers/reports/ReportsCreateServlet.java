@@ -78,6 +78,8 @@ public class ReportsCreateServlet extends HttpServlet {
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             r.setCreated_at(currentTime);
             r.setUpdated_at(currentTime);
+            r.setApproval_flag(Integer.parseInt(request.getParameter("approval_flag")));
+            r.setApproval_content("");
 
             List<String> errors = ReportValidator.validate(r);
             if(errors.size() > 0) {

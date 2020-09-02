@@ -1,6 +1,7 @@
 package controllers.reports;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Employee;
 import models.Report;
 import utils.DBUtil;
 
@@ -35,6 +37,26 @@ public class ReportsShowServlet extends HttpServlet {
         EntityManager em = DBUtil.createEntityManager();
 
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
+        List<Employee> myiineList = r.getIineEmployeeList();
+
+        Employee login_employee = (Employee)request.getSession().getAttribute("login_employee");
+
+        Long q = em.createNamedQuery("getiinesCount",Long.class).setParameter("report",r).getSingleResult();
+        System.out.println(r.getEmployee());
+
+        //mployee employee 過去に一致しているものがあるか
+        System.out.println(r);
+        Long Repo = em.createNamedQuery("getreport_employee",Long.class)
+                .setParameter("report",r)
+                .setParameter("employee" ,login_employee)
+                .getSingleResult();
+        System.out.println(q);
+        System.out.println(Repo);
+        System.out.println(myiineList);
+
+        request.setAttribute("count", q);
+        request.setAttribute("getreport_employee", Repo);
+        request.setAttribute("myiine", myiineList);
 
         em.close();
 

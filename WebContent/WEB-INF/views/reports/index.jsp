@@ -15,6 +15,7 @@
                     <th class="report_name">氏名</th>
                     <th class="report_date">日付</th>
                     <th class="report_title">タイトル</th>
+                    <th class="approval_status">承認状態</th>
                     <th class="report_action">操作</th>
                 </tr>
                 <c:forEach var="report" items="${reports}" varStatus="status">
@@ -22,6 +23,27 @@
                         <td class="report_name"><c:out value="${report.employee.name}" /></td>
                         <td class="report_date"><fmt:formatDate value='${report.report_date}' pattern='yyyy-MM-dd' /></td>
                         <td class="report_title">${report.title}</td>
+                        <td class="report_title">
+
+                            <c:choose>
+                                    <c:when test="${report.approval_flag == 0}">
+                                        <c:out value="承認不要"></c:out>
+                                     </c:when>
+
+                                    <c:when test="${report.approval_flag == 1}">
+                                        <c:out value="承認待ち"></c:out>
+                                     </c:when>
+
+                                    <c:when test="${report.approval_flag == 4}">
+                                        <c:out value="承認済み"></c:out>
+                                    </c:when>
+
+                                     <c:when test="${report.approval_flag == 5}">
+                                         <c:out value="差し戻し(再提出)"></c:out>
+                                     </c:when>
+                                </c:choose>
+                        </td>
+
                         <td class="report_action"><a href="<c:url value='/reports/show?id=${report.id}' />">詳細を見る</a></td>
                     </tr>
                 </c:forEach>

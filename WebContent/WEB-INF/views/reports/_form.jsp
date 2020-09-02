@@ -34,5 +34,15 @@
 <input type="Time" name ="work_end" value='${report.work_end}'required/>
 <br /><br />
 
+
+<label for="approval_flag">承認者</label><br />
+<select name="approval_flag">
+    <option value="0">承認不要</option>
+    <option value="1">課長</option>
+</select>
+
+
+<br /><br />
+
 <input type="hidden" name="_token" value="${_token}" />
 <button type="submit">投稿</button>
